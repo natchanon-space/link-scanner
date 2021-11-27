@@ -1,9 +1,9 @@
 from typing import List
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import urllib.request
 import urllib.error
+import sys
 
 def get_links(url: str) -> List[str]:
     """Find all links on page at the given url.
@@ -54,11 +54,15 @@ def invalid_urls(urllist: List[str]) -> List[str]:
     return urls
 
 if __name__ == "__main__":
-    urls = get_links("https://cpske.github.io/ISP/")
-    for l in urls:
-        print(l)
+    if len(sys.argv) != 2:
+        print("Usage:  python3 link_scan.py [url]")
+    else:
+        url = sys.argv[1]
+        urls = get_links(url)
+        for l in urls:
+            print(l)
 
-    print()
-    print("Bad Links:")
-    for l in invalid_urls(urls):
-        print(l)
+        print()
+        print("Bad Links:")
+        for l in invalid_urls(urls):
+            print(l)
