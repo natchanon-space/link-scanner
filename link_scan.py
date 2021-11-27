@@ -2,6 +2,8 @@ from typing import List
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+import urllib.request
+import urllib.error
 
 def get_links(url: str) -> List[str]:
     """Find all links on page at the given url.
@@ -24,6 +26,21 @@ def get_links(url: str) -> List[str]:
     driver.close()
     return list(urls)
 
+def is_valid_url(url: str) -> bool:
+    """Check whether url is good link or not.
+    Any error code except 403 (Permission Denied) is a bad link.
+
+    Returns:
+        True if the URL is OK, False otherwise
+    """
+    try:
+        req = urllib.request.Request(url, method="HEAD")
+        _ = urllib.request.urlopen(req)
+    except urllib.error.HTTPError as error:
+        if error.code != 403:
+            return False
+    return True
+
 if __name__ == "__main__":
     for l in get_links("https://cpske.github.io/ISP/"):
-        print(l)
+        print(l, is_valid_url(l))
