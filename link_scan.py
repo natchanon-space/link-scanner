@@ -41,6 +41,24 @@ def is_valid_url(url: str) -> bool:
             return False
     return True
 
+def invalid_urls(urllist: List[str]) -> List[str]:
+    """Validate the urls in urllist.
+
+    Returns:
+        a new list containing the invalid or unreachable urls.
+    """
+    urls = []
+    for l in urllist:
+        if not is_valid_url(l):
+            urls.append(l)
+    return urls
+
 if __name__ == "__main__":
-    for l in get_links("https://cpske.github.io/ISP/"):
-        print(l, is_valid_url(l))
+    urls = get_links("https://cpske.github.io/ISP/")
+    for l in urls:
+        print(l)
+
+    print()
+    print("Bad Links:")
+    for l in invalid_urls(urls):
+        print(l)
